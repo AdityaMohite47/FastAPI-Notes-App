@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes CRUD</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .note { border: 1px solid #888; padding: 10px; margin-bottom: 10px; }
+        input, textarea { width: 100%; margin-top: 5px; }
+        button { margin-top: 10px; }
+    </style>
+</head>
+
+<body>
+
+{{ error }}
+
+<h2>Notes Manager</h2>
+
+<!-- CREATE -->
+<section>
+    <h3>Create Note</h3>
+    <form action="/notes/create" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <br>
+        <textarea name="content" placeholder="Content" required></textarea>
+        <br>
+        <button type="submit">Add Note</button>
+    </form>
+</section>
+
+<hr>
+
+<!-- LIST NOTES (READ) -->
+<section>
+    <h3>Your Notes</h3>
+
+    {% if notes %}
+        {% for note in notes %}
+        <div class="note">
+            <strong>Title:</strong> {{ note.title }} <br>
+            <strong>Content:</strong>
+            <p>{{ note.content }}</p>
+
+            <!-- UPDATE -->
+            <form action="/notes/update/{{ note.id }}" method="post">
+                <input type="text" name="title" value="{{ note.title }}" required>
+                <textarea name="content" required>{{ note.content }}</textarea>
+                <button type="submit">Update</button>
+            </form>
+
+            <!-- DELETE -->
+            <form action="/notes/delete/{{ note.id }}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes found.</p>
+    {% endif %}
+
+</section>
+    
+</body>
+</html>
